@@ -18,8 +18,6 @@ const bricolage = Bricolage_Grotesque({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  // Body text can swap in after the headline; not preloading keeps bandwidth for the display font.
-  preload: false,
   display: "swap",
 });
 

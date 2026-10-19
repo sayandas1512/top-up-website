@@ -96,7 +96,7 @@ export default function Hero() {
       <div className="absolute inset-0 -z-10 flex items-center justify-center" aria-hidden="true">
         <div
           data-fill
-          className="aspect-square w-[150vmax] shrink-0 rounded-full bg-drop will-change-transform"
+          className="aspect-square w-[150vmax] shrink-0 rounded-full bg-drop"
         />
       </div>
 
@@ -116,7 +116,7 @@ export default function Hero() {
           </svg>
 
           <div className="absolute inset-0 [clip-path:url(#hero-drop-clip)]" aria-hidden="true">
-            <div data-water className="absolute inset-0 will-change-transform">
+            <div data-water className="absolute inset-0">
               <Wave className="absolute inset-x-0 bottom-full h-[9%]" />
               <div className="absolute inset-0 bg-drop" />
             </div>

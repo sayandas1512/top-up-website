@@ -46,5 +46,5 @@ Entry 3 has no licence, so it is looked at for ideas only. Nothing is copied or 
 - `Cuberto/scroll-sequence-demo`: no licence, last updated 2022, and image-sequence scrubbing is heavier than our SVG-only brief allows.
 - Many other "gsap scrolltrigger" repos returned by search have no licence and little relevance.
 
-## Gap to close in Phase 2
-None of these is a water-level-inside-a-shape demo. The Hero (water rising inside the drop, then filling the viewport) will be built from the ideas above plus a `clipPath` or mask approach. A CodePen or two on "SVG liquid fill" would be worth a look then, with licences checked first.
+## Phase 2 note
+None of these is a water-level-inside-a-shape demo. The Hero was built from first principles using the ideas above: a static `clip-path` in the shape of the drop, with the water element moved inside it by `yPercent` (so only transform changes), and a large circle scaled up for the full-screen fill. No external demo was consulted or copied for it.

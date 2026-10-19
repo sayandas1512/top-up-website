@@ -25,6 +25,8 @@ Gaps, unsourced claims, asset requests and client decisions. Add to this file in
 - **Hindi and Konkani.** `copy.ts` is structured for translation. Translations and who reviews them are undecided.
 
 ## Technical notes
+- **Hero first paint.** The default markup is the final state (water full, screen blue) so the page reads without JS and under reduced motion. `CLAUDE.md` says hidden start states come from GSAP, not CSS, so on a slow phone a visitor may briefly see the blue state before JS hydrates and resets it to the empty drop. If that flash is unacceptable, the fix is a small CSS start state gated on a `js` class set by an inline script. That bends the "GSAP not CSS" rule, so it needs a decision.
+- **Frame rate on a real phone is unverified.** Headless Chrome caps at 30 fps, so scrubbing smoothness (pinned hero, 60 fps target) still needs a check on a real mid-range phone.
 - The header's secondary link ("Find a refill point") is hidden below 640px so the primary button fits on a 360px phone. It stays in the hero and footer. Confirm this is acceptable.
 - `experimental.inlineCss` is on in `next.config.ts`. It inlines the roughly 6 KB stylesheet to remove a render-blocking request. Experimental flag; revisit if it causes trouble on a Next upgrade.
 - Vercel's default deployment protection is on for this project, so preview URLs require a Vercel login. Decide whether previews should be public for client review.

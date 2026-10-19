@@ -47,3 +47,16 @@ export const sources = [
 ] as const;
 
 export type SourceId = (typeof sources)[number]["id"];
+
+/**
+ * Sources in order of first citation on the page. <Cite> numbers and the Sources section follow this list.
+ * Add an id here when a new stat is first cited; <Cite> throws at build time if its id is missing.
+ */
+export const citationOrder: SourceId[] = [
+  "pacinst-water-use",
+  "gleick-cooley-energy",
+  "ncl-pace-pet",
+  "si-marine-debris",
+  "noaa-garbage-patch",
+  "topup-pilot"
+];

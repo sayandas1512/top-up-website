@@ -1,27 +1,65 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "lenis/dist/lenis.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-drop: var(--drop);
+  --color-navy: var(--navy);
+  --color-sand: var(--sand);
+  --color-amber: var(--amber);
+
+  --font-display: var(--ff-display);
+  --font-sans: var(--ff-body);
+
+  --text-body: var(--fs-body);
+  --text-lead: var(--fs-lead);
+  --text-h3: var(--fs-h3);
+  --text-h2: var(--fs-h2);
+  --text-h1: var(--fs-h1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--sand);
+  color: var(--navy);
+  /* Keeps anchor targets clear of the sticky header. */
+  scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--sand);
+  color: var(--navy);
+  font-family: var(--ff-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ff-display);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Visible focus on every interactive element. */
+:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 6px var(--sand);
+}
+
+.container-page {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

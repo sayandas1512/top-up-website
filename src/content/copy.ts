@@ -34,6 +34,13 @@ export const copy = {
       }
     ]
   },
+  // Labels for the energy bars. Figures come from gleick-cooley-energy; no tap value is stated beyond the source.
+  energy: {
+    bottledLabel: "Bottled water: 5.6 to 10.2 megajoules (MJ) per litre",
+    tapLabel: "Treated tap water: a tiny fraction of that",
+    ratio: "Bottled water takes up to about 2,000 times more energy.",
+    note: "US analysis. Bars are drawn to scale, so the tap bar is too small to see."
+  },
   hierarchy: {
     steps: ["Rethink", "Reduce", "Reuse", "Recycle"],
     line: "Reduce comes first. It means using fewer resources in the first place."

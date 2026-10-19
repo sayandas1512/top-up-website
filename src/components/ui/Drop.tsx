@@ -1,3 +1,6 @@
+/** Drop outline in a 100 x 124 box. Shared by the logo and the hero water-fill clip. */
+export const DROP_PATH = "M50 4C50 4 10 52 10 82a40 40 0 0 0 80 0C90 52 50 4 50 4Z";
+
 type Props = {
   /** Rendered width in px. Height follows the viewBox. */
   size?: number;
@@ -23,10 +26,7 @@ export default function Drop({ size = 48, title, className }: Props) {
       className={className}
       focusable="false"
     >
-      <path
-        d="M50 4C50 4 10 52 10 82a40 40 0 0 0 80 0C90 52 50 4 50 4Z"
-        fill="var(--drop)"
-      />
+      <path d={DROP_PATH} fill="var(--drop)" />
       <text
         x="50"
         y="88"

@@ -10,7 +10,7 @@ const [waterBefore, waterAfter] = beatWater.text.split("3");
 
 function Beat({ visual, children }: { visual: React.ReactNode; children: React.ReactNode }) {
   return (
-    <article className="grid items-center gap-6 py-10 sm:grid-cols-[minmax(0,240px)_1fr] sm:gap-10 md:gap-16">
+    <article className="grid items-center gap-6 py-10 sm:grid-cols-[minmax(0,340px)_1fr] sm:gap-10 md:gap-16">
       <div className="flex min-h-[120px] items-center sm:justify-center">{visual}</div>
       <div className="max-w-xl">{children}</div>
     </article>

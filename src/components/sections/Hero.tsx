@@ -90,7 +90,7 @@ export default function Hero() {
       ref={root}
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden px-[var(--gutter)] pb-10 pt-[calc(var(--header-h)+1rem)] text-center"
+      className="relative isolate -mt-[var(--header-h)] flex min-h-svh flex-col items-center justify-center overflow-hidden px-[var(--gutter)] pb-6 pt-[calc(var(--header-h)+0.5rem)] text-center sm:pb-10"
     >
       {/* Expanding fill: a blue circle scaled up from the drop. Final state = scale 1 = whole screen blue. */}
       <div className="absolute inset-0 -z-10 flex items-center justify-center" aria-hidden="true">
@@ -105,7 +105,7 @@ export default function Hero() {
         <div
           data-drop
           className="relative shrink-0"
-          style={{ width: "clamp(120px, 22svh, 280px)", aspectRatio: "100 / 124" }}
+          style={{ width: "clamp(110px, 19svh, 280px)", aspectRatio: "100 / 124" }}
         >
           <svg width="0" height="0" aria-hidden="true" className="absolute" focusable="false">
             <defs>
@@ -138,7 +138,7 @@ export default function Hero() {
           </svg>
         </div>
 
-        <h1 id="hero-heading" className="mt-6 text-h1 font-bold">
+        <h1 id="hero-heading" className="mt-4 text-h1 font-bold sm:mt-6">
           {WORDS.map((word, i) => (
             <span key={i}>
               <span data-word className="inline-block">
@@ -149,10 +149,10 @@ export default function Hero() {
           ))}
         </h1>
 
-        <p data-reveal className="mt-5 max-w-2xl text-lead">
+        <p data-reveal className="mt-4 max-w-2xl text-lead sm:mt-5">
           {copy.hero.sub}
         </p>
-        <div data-reveal className="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <div data-reveal className="mt-5 flex sm:mt-7 flex-wrap items-center justify-center gap-3">
           <Button href="#join">{copy.hero.ctaPrimary}</Button>
           <Button href="#find" variant="secondary">
             {copy.hero.ctaSecondary}

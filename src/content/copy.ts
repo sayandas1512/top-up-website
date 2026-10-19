@@ -39,7 +39,7 @@ export const copy = {
     bottledLabel: "Bottled water: 5.6 to 10.2 megajoules (MJ) per litre",
     tapLabel: "Treated tap water: a tiny fraction of that",
     ratio: "Bottled water takes up to about 2,000 times more energy.",
-    note: "US analysis. Bars are drawn to scale, so the tap bar is too small to see."
+    note: "US analysis. Bars are drawn to scale. The tap bar would be thinner than a pixel, so it is shown as a marker."
   },
   hierarchy: {
     steps: ["Rethink", "Reduce", "Reuse", "Recycle"],

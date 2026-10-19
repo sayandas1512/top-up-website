@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="max-w-xl">
           <div className="flex items-center">
             <Drop size={36} title="Top Up" />
-            <span className="ml-2 font-display text-xl font-bold">Top Up</span>
+            <span className="ml-2 whitespace-nowrap font-display text-xl font-bold">Top Up</span>
           </div>
           <p className="mt-4">{copy.closing}</p>
         </div>

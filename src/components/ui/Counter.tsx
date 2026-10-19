@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
-import { useReducedMotion } from "@/components/motion/useReducedMotion";
 
 type Props = {
   /** Final value. Always present in the DOM, so it reads correctly without JS or with a screen reader. */
@@ -29,30 +28,40 @@ export default function Counter({
 }: Props) {
   const root = useRef<HTMLSpanElement>(null);
   const live = useRef<HTMLSpanElement>(null);
-  const reduced = useReducedMotion();
   const finalText = `${prefix}${fmt(value, decimals)}${suffix}`;
 
   useGSAP(
     () => {
-      if (reduced || !live.current) return;
       const el = live.current;
-      const state = { n: from };
-      el.textContent = `${prefix}${fmt(from, decimals)}${suffix}`;
+      if (!el) return;
+      const mm = gsap.matchMedia();
 
-      gsap.to(state, {
-        n: value,
-        duration,
-        ease: "power2.out",
-        scrollTrigger: { trigger: root.current, start: "top 85%", once: true },
-        onUpdate: () => {
-          el.textContent = `${prefix}${fmt(state.n, decimals)}${suffix}`;
-        },
-        onComplete: () => {
+      // Reduced motion never enters this block, so the final value simply stays in the DOM.
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const state = { n: from };
+        el.textContent = `${prefix}${fmt(from, decimals)}${suffix}`;
+
+        gsap.to(state, {
+          n: value,
+          duration,
+          ease: "power2.out",
+          scrollTrigger: { trigger: root.current, start: "top 85%", once: true },
+          onUpdate: () => {
+            el.textContent = `${prefix}${fmt(state.n, decimals)}${suffix}`;
+          },
+          onComplete: () => {
+            el.textContent = finalText;
+          },
+        });
+
+        return () => {
           el.textContent = finalText;
-        },
+        };
       });
+
+      return () => mm.revert();
     },
-    { scope: root, dependencies: [reduced, value, from, duration, decimals, prefix, suffix] },
+    { scope: root, dependencies: [value, from, duration, decimals, prefix, suffix], revertOnUpdate: true },
   );
 
   return (

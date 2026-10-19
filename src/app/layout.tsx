@@ -10,12 +10,16 @@ import "./globals.css";
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
   subsets: ["latin"],
+  // Display text is only ever bold, so a single static weight keeps the file small.
+  weight: "700",
   display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  // Body text can swap in after the headline; not preloading keeps bandwidth for the display font.
+  preload: false,
   display: "swap",
 });
 

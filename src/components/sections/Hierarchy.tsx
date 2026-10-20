@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import { copy } from "@/content/copy";
 
 /**
@@ -11,8 +12,7 @@ import { copy } from "@/content/copy";
 export default function Hierarchy() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const mm = gsap.matchMedia();
@@ -28,9 +28,7 @@ export default function Hierarchy() {
         );
       });
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <section ref={root} id="hierarchy" aria-labelledby="hierarchy-heading" className="py-[var(--space-section)]">

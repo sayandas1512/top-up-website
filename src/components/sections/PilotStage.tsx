@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import { BOTTLE, sinePath } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
 
@@ -32,8 +33,7 @@ const JUG = "M40 10h40v14c0 8 22 10 22 34v80a14 14 0 0 1-14 14H32a14 14 0 0 1-14
 export default function PilotStage() {
   const root = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const q = (sel: string) => el.querySelector<HTMLElement>(sel)!;
@@ -107,9 +107,7 @@ export default function PilotStage() {
       );
 
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <div ref={root} className="grid items-start gap-10 md:grid-cols-[1.5fr_1fr] md:gap-14">

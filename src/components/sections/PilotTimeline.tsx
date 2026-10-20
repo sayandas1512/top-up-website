@@ -1,15 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import { copy } from "@/content/copy";
 
 /** Season 1, After one year, Season 2. A line draws as you scroll; each step fades up once. Final state is the default markup. */
 export default function PilotTimeline() {
   const root = useRef<HTMLOListElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const line = el.querySelector("[data-line]");
@@ -35,9 +35,7 @@ export default function PilotTimeline() {
         },
       );
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <ol ref={root} className="relative grid gap-8 sm:grid-cols-3 sm:gap-6">

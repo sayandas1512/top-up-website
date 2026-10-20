@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import { DROP_PATH } from "@/components/ui/Drop";
 import { BOTTLE, sinePath } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
@@ -24,8 +25,7 @@ function DropShape({ className, ...rest }: { className?: string } & React.SVGPro
 export function WaterVisual() {
   const root = useRef<SVGSVGElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const mm = gsap.matchMedia();
@@ -48,9 +48,7 @@ export function WaterVisual() {
           .fromTo(extras, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, stagger: 0.18, ease: "back.out(2)" }, 1.0);
       });
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <svg ref={root} viewBox="0 0 200 130" className="h-auto w-full max-w-[220px]" aria-hidden="true" focusable="false">
@@ -103,8 +101,7 @@ export function WaterVisual() {
 export function EnergyBars() {
   const root = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const mm = gsap.matchMedia();
@@ -116,9 +113,7 @@ export function EnergyBars() {
         );
       });
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   // 5.6 and 10.2 MJ per litre, as fractions of the 10.2 maximum.
   const solid = (5.6 / 10.2) * 100;

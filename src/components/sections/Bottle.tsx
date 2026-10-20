@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useId, useRef, useState } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import Button from "@/components/ui/Button";
 import { DROP_PATH } from "@/components/ui/Drop";
 import { copy } from "@/content/copy";
@@ -18,8 +19,7 @@ const BODY = "M62 56h36v16c0 10 24 14 24 36v176a14 14 0 0 1-14 14H52a14 14 0 0 1
 function BottleArt() {
   const root = useRef<SVGSVGElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = root.current;
       if (!el) return;
       const mm = gsap.matchMedia();
@@ -29,9 +29,7 @@ function BottleArt() {
         gsap.fromTo(el.querySelector("[data-sweep]"), { x: -40 }, { x: 150, duration: 1.2, ease: "power1.inOut", delay: 0.5, scrollTrigger });
       });
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <svg

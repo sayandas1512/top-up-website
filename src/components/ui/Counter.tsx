@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/components/motion/registerGsap";
+import { gsap } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 
 type Props = {
   /** Final value. Always present in the DOM, so it reads correctly without JS or with a screen reader. */
@@ -30,8 +31,7 @@ export default function Counter({
   const live = useRef<HTMLSpanElement>(null);
   const finalText = `${prefix}${fmt(value, decimals)}${suffix}`;
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const el = live.current;
       if (!el) return;
       const mm = gsap.matchMedia();
@@ -60,9 +60,7 @@ export default function Counter({
       });
 
       return () => mm.revert();
-    },
-    { scope: root, dependencies: [value, from, duration, decimals, prefix, suffix], revertOnUpdate: true },
-  );
+    }, root, [value, from, duration, decimals, prefix, suffix]);
 
   return (
     <span ref={root} className={className}>

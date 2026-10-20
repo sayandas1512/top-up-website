@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/components/motion/registerGsap";
+import { gsap, ScrollTrigger } from "@/components/motion/registerGsap";
+import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
 import Lamp from "@/components/ui/Lamp";
 import { DROP_PATH } from "@/components/ui/Drop";
 import { copy } from "@/content/copy";
@@ -15,8 +16,7 @@ import { copy } from "@/content/copy";
 export default function HowItWorks() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
+  useGsapWhenIdle(() => {
       const section = root.current;
       if (!section) return;
       const q = (sel: string) => section.querySelector<HTMLElement>(sel)!;
@@ -63,9 +63,7 @@ export default function HowItWorks() {
       });
 
       return () => mm.revert();
-    },
-    { scope: root },
-  );
+    }, root);
 
   return (
     <section ref={root} id="how" aria-labelledby="how-heading" className="relative overflow-hidden py-[var(--space-section)]">

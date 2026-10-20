@@ -4,13 +4,14 @@ import { useRef, useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import Field from "@/components/ui/Field";
 import { copy } from "@/content/copy";
-import { JOIN_TYPES, joinSchema, suggestSchema } from "@/lib/lead";
+import type { z } from "zod";
+import { BOTTLE_INTERESTS, JOIN_TYPES, bottleSchema, joinSchema, suggestSchema } from "@/lib/lead";
 
 type Status = "idle" | "sending" | "done" | "error";
 type Errors = Record<string, string>;
 
 /** Posts to /api/lead and tracks status. Field errors come from the same zod schema the server uses. */
-function useLeadForm(schema: typeof joinSchema | typeof suggestSchema, extra: Record<string, string>) {
+function useLeadForm(schema: z.ZodType, extra: Record<string, string>) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [serverError, setServerError] = useState("");
@@ -175,6 +176,50 @@ export function SuggestForm() {
           {status === "sending" ? copy.join.form.sending : copy.find.suggestSubmit}
         </Button>
         <StatusMessage status={status} error={serverError} done={copy.find.suggestDone} />
+      </div>
+      <p className="text-[0.9em] opacity-80">{copy.join.form.privacy}</p>
+    </form>
+  );
+}
+
+/** Notify me / bulk enquiry for the Top Up bottle. Posts with type "bottle". */
+export function BottleForm({ firstFieldId }: { firstFieldId: string }) {
+  const f = copy.bottle.form;
+  const { status, errors, serverError, onSubmit } = useLeadForm(bottleSchema, { type: "bottle" });
+
+  if (status === "done") return <Done text={f.done} />;
+
+  return (
+    <form onSubmit={onSubmit} noValidate className="relative grid gap-5">
+      <Field id={firstFieldId} label={f.interest} error={errors.interest}>
+        {(a) => (
+          <select {...a} name="interest" defaultValue="">
+            <option value="" disabled>
+              Choose one
+            </option>
+            {Object.entries(BOTTLE_INTERESTS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        )}
+      </Field>
+      <Field id="bottle-name" label={f.name} error={errors.name}>
+        {(a) => <input {...a} name="name" type="text" autoComplete="name" />}
+      </Field>
+      <Field id="bottle-contact" label={f.contact} hint={f.contactHint} error={errors.contact}>
+        {(a) => <input {...a} name="contact" type="text" inputMode="email" autoComplete="email" />}
+      </Field>
+      <Field id="bottle-message" label={f.message} error={errors.message}>
+        {(a) => <textarea {...a} name="message" rows={3} />}
+      </Field>
+      <Honeypot />
+      <div className="flex flex-wrap items-center gap-4">
+        <Button type="submit" disabled={status === "sending"}>
+          {status === "sending" ? copy.join.form.sending : f.submit}
+        </Button>
+        <StatusMessage status={status} error={serverError} done={f.done} />
       </div>
       <p className="text-[0.9em] opacity-80">{copy.join.form.privacy}</p>
     </form>

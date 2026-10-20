@@ -41,7 +41,21 @@ export const suggestSchema = z.object({
   website: honeypot,
 });
 
-export const leadSchema = z.discriminatedUnion("type", [joinSchema, suggestSchema]);
+export const BOTTLE_INTERESTS = {
+  notify: "Notify me when it launches",
+  bulk: "Bulk enquiry",
+} as const;
+
+export const bottleSchema = z.object({
+  type: z.literal("bottle"),
+  interest: z.enum(["notify", "bulk"], { message: "Please choose one." }),
+  name: required(100, "Please tell us your name."),
+  contact,
+  message: text(1000).optional().default(""),
+  website: honeypot,
+});
+
+export const leadSchema = z.discriminatedUnion("type", [joinSchema, suggestSchema, bottleSchema]);
 
 export type JoinInput = z.input<typeof joinSchema>;
 export type LeadInput = z.infer<typeof leadSchema>;

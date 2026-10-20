@@ -101,6 +101,34 @@ export const copy = {
       contact: "Link or contact"
     }
   },
+  bottle: {
+    heading: "The Top Up bottle.",
+    intro: "A reusable bottle with the Top Up mark. Bring it to a Top Up point and top up.",
+    // No claims about material, liner, capacity or health until the supplier spec is confirmed (CLAUDE.md rule 3).
+    benefits: [
+      "Made to be refilled again and again.",
+      "Carries the Top Up mark.",
+      "One bottle in place of many single-use ones."
+    ],
+    pricing: "Pricing announced at launch",
+    details: "Full details announced at launch.",
+    illustrationAlt: "Illustration of a reusable metal bottle with the Top Up mark",
+    cta: "Notify me / bulk enquiry",
+    formHeading: "Notify me, or ask about a bulk order",
+    form: {
+      interest: "What are you after?",
+      name: "Your name",
+      contact: "Phone or email",
+      contactHint: "We will use this to get back to you.",
+      message: "Anything we should know? For a bulk enquiry, say how many and what for (optional).",
+      submit: "Send",
+      done: "Thank you. We have your details and will be in touch about the bottle."
+    }
+  },
+  roadmap: {
+    label: "Roadmap",
+    line: "Round 1: tourist hubs, starting with Goa. Then more places, one round at a time."
+  },
   join: {
     gets: {
       heading: "What a centre gets",

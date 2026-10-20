@@ -5,7 +5,7 @@ import SmoothScroll from "@/components/motion/SmoothScroll";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
 import { copy } from "@/content/copy";
-import { isProduction, siteUrl } from "@/lib/site";
+import { isIndexable, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   description: copy.hero.sub,
   applicationName: "Top Up",
   alternates: { canonical: "/" },
-  // Only real production deploys are indexable. See src/lib/site.ts.
-  robots: isProduction ? undefined : { index: false, follow: false },
+  // Indexable only in production with ALLOW_INDEXING=true. See src/lib/site.ts.
+  robots: isIndexable ? undefined : { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: "Top Up",

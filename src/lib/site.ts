@@ -13,5 +13,8 @@ export function siteUrl(): string {
   return raw.replace(/\/$/, "");
 }
 
-/** Only real production deploys are indexable. Previews and local builds ask search engines to stay away. */
-export const isProduction = process.env.VERCEL_ENV === "production";
+/**
+ * Search engines are asked to stay away unless this is a production deploy AND ALLOW_INDEXING=true is set in Vercel.
+ * Production starts out noindex, because the real domain is not chosen yet. Set ALLOW_INDEXING=true when it is.
+ */
+export const isIndexable = process.env.VERCEL_ENV === "production" && process.env.ALLOW_INDEXING === "true";

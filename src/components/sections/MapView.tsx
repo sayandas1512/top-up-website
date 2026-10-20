@@ -62,7 +62,10 @@ export default function MapView({
     map.on("load", () => {
       setReady(true);
       // Asked for with the keyboard: put focus on the first control so it is not lost when the placeholder goes.
-      if (focusOnReady) el.querySelector<HTMLElement>(".maplibregl-marker, .maplibregl-ctrl button")?.focus();
+      // Only if focus is still on the placeholder. If the visitor has already tabbed on, leave focus alone.
+      if (focusOnReady && document.activeElement === el.parentElement) {
+        el.querySelector<HTMLElement>(".maplibregl-marker, .maplibregl-ctrl button")?.focus();
+      }
       onReady();
     });
     map.on("error", (e) => {

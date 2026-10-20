@@ -38,8 +38,9 @@ export default async function OpenGraphImage() {
           </svg>
           <div style={{ position: "absolute", left: 0, right: 0, top: 238, display: "flex", justifyContent: "center", fontSize: 56, fontWeight: 700 }}>top up</div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", marginLeft: 70 }}>
-          <div style={{ display: "flex", fontSize: 76, fontWeight: 700, lineHeight: 1.05 }}>{copy.hero.h1}</div>
+        {/* 1200 wide, minus 90 padding each side, the 300 drop and a 70 gap, leaves 650 for the text. */}
+        <div style={{ display: "flex", flexDirection: "column", marginLeft: 70, width: 650 }}>
+          <div style={{ display: "flex", fontSize: 66, fontWeight: 700, lineHeight: 1.08 }}>{copy.hero.h1}</div>
           <div style={{ display: "flex", marginTop: 28, fontSize: 30, opacity: 0.8 }}>Refill drinking water across India</div>
         </div>
       </div>

@@ -2,8 +2,14 @@
 // NEXT_PUBLIC_SITE_URL if set, else Vercel's production URL, else localhost.
 export function siteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  const raw = explicit || (vercel ? `https://${vercel}` : "http://localhost:3000");
+  const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  // Previews use their own address, so their social links and sitemap point at themselves, not at production.
+  const deploymentHost = process.env.VERCEL_URL?.trim();
+  const raw =
+    explicit ||
+    (process.env.VERCEL_ENV === "production" && productionHost ? `https://${productionHost}` : "") ||
+    (deploymentHost ? `https://${deploymentHost}` : "") ||
+    "http://localhost:3000";
   return raw.replace(/\/$/, "");
 }
 

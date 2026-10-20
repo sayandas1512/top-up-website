@@ -1,7 +1,7 @@
 import { centres } from "@/content/centres";
 import { copy } from "@/content/copy";
 import MapLoader from "./MapLoader";
-import { SuggestForm } from "./LeadForms";
+import { LazySuggestForm } from "./LazyForms";
 
 export default function FindCentre() {
   return (
@@ -35,7 +35,7 @@ export default function FindCentre() {
           <div>
             <h3 className="font-display text-h3 font-bold">{copy.find.suggestHeading}</h3>
             <p className="mt-2 mb-5">{copy.find.suggestIntro}</p>
-            <SuggestForm />
+            <LazySuggestForm />
           </div>
         </div>
       </div>

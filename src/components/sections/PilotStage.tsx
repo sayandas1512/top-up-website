@@ -81,16 +81,21 @@ export default function PilotStage() {
             },
           });
 
-          bottles.forEach((b, i) => {
-            // Each bottle tumbles and lifts as it goes, so clearing reads as "lifted away", not just "deleted".
-            const turn = (i % 2 ? 1 : -1) * (14 + ((i * 7) % 18));
-            tl.fromTo(
-              b,
-              { opacity: 1, scale: 1, rotation: 0, y: 0 },
-              { opacity: 0, scale: 0.3, rotation: turn, y: -16, duration: STEP * 3 },
-              START + RANK_OF[i] * STEP,
-            );
-          });
+          // One tween for all 75 bottles. Each bottle starts at its own rank, so they clear in a scattered order, and
+          // each tumbles and lifts as it goes ("lifted away", not just "deleted").
+          tl.fromTo(
+            bottles,
+            { opacity: 1, scale: 1, rotation: 0, y: 0 },
+            {
+              opacity: 0,
+              scale: 0.3,
+              rotation: (i: number) => (i % 2 ? 1 : -1) * (14 + ((i * 7) % 18)),
+              y: -16,
+              duration: STEP * 3,
+              stagger: (i: number) => RANK_OF[i] * STEP,
+            },
+            START,
+          );
           // Slides in from the side on desktop; rises from below on mobile, where a sideways start would overflow the page.
           tl.fromTo(jug, isDesktop ? { x: 24, opacity: 0 } : { y: 24, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.15 }, 0)
             .fromTo(prices[0], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, 0.15)

@@ -2,7 +2,7 @@
 
 import { useRef, useState, type KeyboardEvent } from "react";
 import { copy } from "@/content/copy";
-import { JoinForm } from "./LeadForms";
+import { LazyJoinForm } from "./LazyForms";
 
 const TABS = ["business", "institution"] as const;
 type Tab = (typeof TABS)[number];
@@ -81,7 +81,7 @@ export default function Join() {
             <List heading={copy.join.gets.heading} items={copy.join.gets.items} />
             <List heading={copy.join.asks.heading} items={copy.join.asks.items} />
           </div>
-          <JoinForm audience={tab} />
+          <LazyJoinForm audience={tab} />
         </div>
       </div>
     </section>

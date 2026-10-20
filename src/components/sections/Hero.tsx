@@ -128,8 +128,7 @@ export default function Hero() {
         },
       );
 
-      // Fonts change line breaks and heights, so measure again once they are ready.
-      document.fonts.ready.then(() => ScrollTrigger.refresh());
+      // SmoothScroll refreshes ScrollTrigger once fonts are ready, so there is no second refresh here.
 
       return () => mm.revert();
     },

@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { useId, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
 import Button from "@/components/ui/Button";
 import { DROP_PATH } from "@/components/ui/Drop";
 import { copy } from "@/content/copy";
-import { BottleForm } from "./LeadForms";
+// Loaded only when the form is opened, so validation code stays out of the first load.
+const BottleForm = dynamic(() => import("./LeadForms").then((m) => m.BottleForm), { ssr: false });
 
 const BODY = "M62 56h36v16c0 10 24 14 24 36v176a14 14 0 0 1-14 14H52a14 14 0 0 1-14-14V108c0-22 24-26 24-36Z";
 
@@ -85,16 +87,6 @@ export default function Bottle() {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const firstField = `${panelId}-interest`.replace(/:/g, "");
-  const first = useRef(true);
-
-  // Move focus into the form when it opens, so keyboard and screen-reader users land in it.
-  useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    if (open) document.getElementById(firstField)?.focus();
-  }, [open, firstField]);
 
   return (
     <section id="bottle" aria-labelledby="bottle-heading" className="bg-navy/[0.04] py-[var(--space-section)]">
@@ -133,7 +125,7 @@ export default function Bottle() {
                 {copy.bottle.formHeading}
               </h3>
               <div className="mt-5">
-                <BottleForm firstFieldId={firstField} />
+                <BottleForm firstFieldId={firstField} focusOnMount />
               </div>
             </div>
           ) : null}

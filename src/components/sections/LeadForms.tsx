@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import Field from "@/components/ui/Field";
 import { copy } from "@/content/copy";
@@ -183,8 +183,14 @@ export function SuggestForm() {
 }
 
 /** Notify me / bulk enquiry for the Top Up bottle. Posts with type "bottle". */
-export function BottleForm({ firstFieldId }: { firstFieldId: string }) {
+export function BottleForm({ firstFieldId, focusOnMount = false }: { firstFieldId: string; focusOnMount?: boolean }) {
   const f = copy.bottle.form;
+
+  // The form arrives after the click that opened it, so it moves focus into itself once it exists.
+  useEffect(() => {
+    if (focusOnMount) document.getElementById(firstFieldId)?.focus();
+  }, [focusOnMount, firstFieldId]);
+
   const { status, errors, serverError, onSubmit } = useLeadForm(bottleSchema, { type: "bottle" });
 
   if (status === "done") return <Done text={f.done} />;

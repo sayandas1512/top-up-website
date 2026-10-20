@@ -10,6 +10,9 @@ import { copy } from "@/content/copy";
 // Free open tiles, no API key. Attribution (OpenStreetMap, OpenMapTiles, OpenFreeMap) stays on the map.
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 
+// The worker is copied into /public at build time (scripts/copy-maplibre-worker.mjs).
+maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
+
 function markerElement(label: string): HTMLButtonElement {
   const el = document.createElement("button");
   el.type = "button";

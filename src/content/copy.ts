@@ -164,5 +164,18 @@ export const copy = {
     heading: "Become a Top Up Centre.",
     body: "Individuals and businesses make the difference when they feel inspired, encouraged and supported. We'll help you set up a visible refill point and spread the word."
   },
+  footer: {
+    navLabel: "Footer",
+    links: [
+      { href: "#find", label: "Find a refill point" },
+      { href: "#join", label: "Become a Top Up Centre" },
+      { href: "#bottle", label: "The Top Up bottle" },
+      { href: "#sources", label: "Sources" }
+    ],
+    contactIntro: "Questions, or want to get involved? Use the form in",
+    contactLink: "Become a Top Up Centre",
+    privacy: "Details you send in a form go to the Top Up team so we can reply to you.",
+    built: "Built with care in India"
+  },
   closing: "Top Up is a plan to encourage refill drinking water across India, beginning with tourist areas, for high impact."
 } as const;

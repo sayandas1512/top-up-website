@@ -74,6 +74,7 @@ export const copy = {
     cite: "topup-pilot" as SourceId
   },
   howItWorks: {
+    heading: "How it works",
     steps: [
       { n: 1, title: "Spot the lamp", text: "A hanging cane lamp and a blue drop mark every Top Up point." },
       { n: 2, title: "Bring your bottle", text: "" },

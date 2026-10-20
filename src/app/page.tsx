@@ -1,16 +1,20 @@
 import Hero from "@/components/sections/Hero";
 import Problem from "@/components/sections/Problem";
 import Hierarchy from "@/components/sections/Hierarchy";
+import Pilot from "@/components/sections/Pilot";
+import HowItWorks from "@/components/sections/HowItWorks";
 import Sources from "@/components/sections/Sources";
 import { copy } from "@/content/copy";
 
-// Pilot, How it works, Find and Join arrive in later phases. Find and Join are placeholders for now.
+// Find and Join are placeholders until Phase 4.
 export default function Home() {
   return (
     <main>
       <Hero />
       <Problem />
       <Hierarchy />
+      <Pilot />
+      <HowItWorks />
 
       <section id="find" aria-labelledby="find-heading" className="py-[var(--space-section)]">
         <div className="container-page max-w-4xl">

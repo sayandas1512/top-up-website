@@ -24,7 +24,15 @@ function markerElement(label: string): HTMLButtonElement {
 }
 
 /** Only ever loaded by MapLoader, when the section is close to the viewport. */
-export default function MapView({ onFail, focusOnReady = false }: { onFail: () => void; focusOnReady?: boolean }) {
+export default function MapView({
+  onFail,
+  onReady,
+  focusOnReady = false,
+}: {
+  onFail: () => void;
+  onReady: () => void;
+  focusOnReady?: boolean;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -55,6 +63,7 @@ export default function MapView({ onFail, focusOnReady = false }: { onFail: () =
       setReady(true);
       // Asked for with the keyboard: put focus on the first control so it is not lost when the placeholder goes.
       if (focusOnReady) el.querySelector<HTMLElement>(".maplibregl-marker, .maplibregl-ctrl button")?.focus();
+      onReady();
     });
     map.on("error", (e) => {
       // A failed style means no map at all; a single missing tile is not worth giving up for.
@@ -75,7 +84,7 @@ export default function MapView({ onFail, focusOnReady = false }: { onFail: () =
     return () => map.remove();
     // focusOnReady is only read once, when the map first loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onFail]);
+  }, [onFail, onReady]);
 
   return (
     <div

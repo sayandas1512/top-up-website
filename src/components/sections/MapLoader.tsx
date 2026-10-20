@@ -14,7 +14,9 @@ export default function MapLoader() {
   const [failed, setFailed] = useState(false);
   // True when the visitor asked for the map with the keyboard: focus then moves into the loaded map.
   const [focusIn, setFocusIn] = useState(false);
+  const [ready, setReady] = useState(false);
   const onFail = useCallback(() => setFailed(true), []);
+  const onReady = useCallback(() => setReady(true), []);
 
   useEffect(() => {
     const el = holder.current;
@@ -32,9 +34,10 @@ export default function MapLoader() {
     return () => io.disconnect();
   }, []);
 
-  // Until the map exists, the box is a focusable control, so a keyboard user can ask for the map even though they
-  // never scrolled near it. Enter, Space or just tabbing onto it loads the map.
-  const asControl = !near && !failed;
+  // Until the map is ready, the box is a focusable control, so a keyboard user can ask for the map even though
+  // they never scrolled near it. Tabbing onto it loads the map, and it stays focusable while loading so focus
+  // is not lost; once ready, focus moves to the map's own controls.
+  const asControl = !ready && !failed;
 
   return (
     // Fixed height from the start, so the map arriving never shifts the page.
@@ -43,6 +46,7 @@ export default function MapLoader() {
       tabIndex={asControl ? 0 : undefined}
       role={asControl ? "button" : undefined}
       aria-label={asControl ? copy.find.loadMap : undefined}
+      aria-busy={asControl && near ? true : undefined}
       onFocus={
         asControl
           ? () => {
@@ -56,7 +60,7 @@ export default function MapLoader() {
       {failed ? (
         <p className="grid h-full place-items-center px-6 text-center font-semibold">{copy.find.mapError}</p>
       ) : near ? (
-        <MapView onFail={onFail} focusOnReady={focusIn} />
+        <MapView onFail={onFail} onReady={onReady} focusOnReady={focusIn} />
       ) : null}
     </div>
   );

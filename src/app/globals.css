@@ -26,6 +26,8 @@ html {
 }
 
 body {
+  /* Guard against stray horizontal overflow. `clip` (not `hidden`) keeps position: sticky working. */
+  overflow-x: clip;
   background: var(--sand);
   color: var(--navy);
   font-family: var(--ff-body);

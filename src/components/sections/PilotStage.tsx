@@ -91,7 +91,8 @@ export default function PilotStage() {
               START + RANK_OF[i] * STEP,
             );
           });
-          tl.fromTo(jug, { x: 36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.15 }, 0)
+          // Slides in from the side on desktop; rises from below on mobile, where a sideways start would overflow the page.
+          tl.fromTo(jug, isDesktop ? { x: 24, opacity: 0 } : { y: 24, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.15 }, 0)
             .fromTo(prices[0], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, 0.15)
             .fromTo(prices[1], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, 0.6)
             .set({}, {}, 1); // make the timeline exactly 1 long

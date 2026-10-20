@@ -117,7 +117,12 @@ export default function Hero() {
             // The bottles that "never exist": each fades and shrinks away as the water rises.
             .fromTo(ghosts, { opacity: 1, scale: 1, y: 0 }, { opacity: 0, scale: 0.6, y: -28, duration: 0.2, stagger: 0.07 }, 0.15)
             // Ripples leave the drop as the screen fills.
-            .fromTo(rings, { scale: 0.7, opacity: 0.5 }, { scale: 2.6, opacity: 0, duration: 0.3, stagger: 0.07 }, 0.5)
+            .fromTo(
+              rings,
+              { scale: 0.7, opacity: 0 },
+              { scale: 2.6, keyframes: { opacity: [0, 0.45, 0] }, duration: 0.3, stagger: 0.07 },
+              0.5,
+            )
             .fromTo(fill, { scale: startScale, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35 }, 0.5)
             .fromTo(reveal, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.15 }, 0.85);
         },
@@ -138,14 +143,6 @@ export default function Hero() {
       aria-labelledby="hero-heading"
       className="relative isolate -mt-[var(--header-h)] flex min-h-svh flex-col items-center justify-center overflow-hidden px-[var(--gutter)] pb-6 pt-[calc(var(--header-h)+0.5rem)] text-center sm:pb-10"
     >
-      {/* Expanding fill: a blue circle scaled up from the drop. Final state = scale 1 = whole screen blue. */}
-      <div className="absolute inset-0 -z-10 flex items-center justify-center" aria-hidden="true">
-        <div
-          data-fill
-          className="aspect-square w-[150vmax] shrink-0 rounded-full bg-drop"
-        />
-      </div>
-
       {/* Ghost bottles. Hidden under reduced motion, where the hero shows its filled end state. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 motion-reduce:hidden">
         {GHOSTS.map((g, i) => (
@@ -169,6 +166,15 @@ export default function Hero() {
           className="relative shrink-0"
           style={{ width: "clamp(110px, 19svh, 280px)", aspectRatio: "100 / 124" }}
         >
+          {/* Expanding fill: a blue circle scaled up from the middle of the drop body. Final state (scale 1) is the
+              whole screen blue. 220vmax is enough to reach every corner from the drop. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-[66%] -z-10 -translate-x-1/2 -translate-y-1/2"
+          >
+            <div data-fill className="aspect-square w-[220vmax] shrink-0 rounded-full bg-drop" />
+          </div>
+
           <svg width="0" height="0" aria-hidden="true" className="absolute" focusable="false">
             <defs>
               <clipPath id="hero-drop-clip" clipPathUnits="objectBoundingBox">
@@ -178,25 +184,15 @@ export default function Hero() {
           </svg>
 
           {/* Ripples that leave the drop as the screen fills. Invisible until the timeline plays them. */}
-          <svg
-            viewBox="-50 -50 100 100"
-            className="pointer-events-none absolute left-1/2 top-[66%] h-[320%] w-[320%] -translate-x-1/2 -translate-y-1/2"
+          <div
             aria-hidden="true"
-            focusable="false"
+            className="pointer-events-none absolute left-1/2 top-[66%] w-[130%] -translate-x-1/2 -translate-y-1/2"
           >
             {[0, 1, 2].map((i) => (
-              <circle
-                key={i}
-                data-ring
-                r="16"
-                fill="none"
-                stroke="var(--navy)"
-                strokeWidth="0.6"
-                opacity="0"
-                style={{ transformBox: "fill-box", transformOrigin: "center" }}
-              />
+              <div key={i} data-ring className="absolute inset-0 aspect-square rounded-full border-2 border-navy opacity-0" />
             ))}
-          </svg>
+            <div className="aspect-square" />
+          </div>
 
           <div className="absolute inset-0 [clip-path:url(#hero-drop-clip)]" aria-hidden="true">
             <div data-water className="absolute inset-0">

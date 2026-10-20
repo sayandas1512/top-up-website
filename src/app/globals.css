@@ -63,3 +63,20 @@ h3 {
     scroll-behavior: auto;
   }
 }
+
+/* Ambient loops. All are used behind `motion-safe:`, so reduced motion never runs them. */
+@keyframes wave-drift {
+  to {
+    transform: translateX(var(--wave-shift, -35px));
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}

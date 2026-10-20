@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { copy } from "@/content/copy";
 
@@ -7,20 +9,15 @@ export const contentType = "image/png";
 
 const DROP = "M50 4C50 4 10 52 10 82a40 40 0 0 0 80 0C90 52 50 4 50 4Z";
 
-// Fetched when the image is built. If it fails, the image still builds with the default font.
-async function displayFont(): Promise<ArrayBuffer | null> {
-  try {
-    const css = await (await fetch("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700")).text();
-    const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
-    if (!url) return null;
-    return await (await fetch(url)).arrayBuffer();
-  } catch {
-    return null;
-  }
+// Bundled in the repo (SIL Open Font License, see src/assets/fonts/OFL.txt), so the image builds offline.
+// "use cache" lets the route stay static even though it reads a file; base64 is used because it serialises.
+async function displayFont(): Promise<string> {
+  "use cache";
+  return (await readFile(join(process.cwd(), "src/assets/fonts/BricolageGrotesque-Bold.ttf"))).toString("base64");
 }
 
 export default async function OpenGraphImage() {
-  const font = await displayFont();
+  const font = Buffer.from(await displayFont(), "base64");
   return new ImageResponse(
     (
       <div
@@ -32,7 +29,7 @@ export default async function OpenGraphImage() {
           padding: "0 90px",
           background: "#F6F0E4",
           color: "#0B2545",
-          fontFamily: font ? "Bricolage" : "sans-serif",
+          fontFamily: "Bricolage",
         }}
       >
         <div style={{ position: "relative", display: "flex", width: 300, height: 372, flexShrink: 0 }}>
@@ -47,6 +44,6 @@ export default async function OpenGraphImage() {
         </div>
       </div>
     ),
-    { ...size, fonts: font ? [{ name: "Bricolage", data: font, weight: 700, style: "normal" }] : undefined },
+    { ...size, fonts: [{ name: "Bricolage", data: font, weight: 700, style: "normal" }] },
   );
 }

@@ -1,12 +1,17 @@
 import Cite from "@/components/ui/Cite";
 import Counter from "@/components/ui/Counter";
 import { copy } from "@/content/copy";
+import type { SourceId } from "@/content/sources";
 import { EnergyBars, OceanRing, RecyclingVisual, WaterVisual } from "./ProblemVisuals";
 
 const [beatWater, beatEnergy, beatRecycling, beatOceans] = copy.problem.beats;
 
-// The "3" in the first beat is the sourced figure, so it is the one that counts up.
-const [waterBefore, waterAfter] = beatWater.text.split("3");
+// The "17" in the first beat is the sourced figure, so it is the one that counts up.
+const [waterBefore, waterAfter] = beatWater.text.split("17");
+
+function Cites({ ids }: { ids: readonly SourceId[] }) {
+  return ids.map((id) => <Cite key={id} id={id} />);
+}
 
 function Beat({ visual, children }: { visual: React.ReactNode; children: React.ReactNode }) {
   return (
@@ -14,6 +19,16 @@ function Beat({ visual, children }: { visual: React.ReactNode; children: React.R
       <div className="flex min-h-[120px] items-center sm:justify-center">{visual}</div>
       <div className="max-w-xl">{children}</div>
     </article>
+  );
+}
+
+/** Older, wider or caveating context for a beat: smaller text, and cited like everything else. */
+function Note({ text, ids }: { text: string; ids: readonly SourceId[] }) {
+  return (
+    <p className="mt-4 text-[0.95em] opacity-90">
+      {text}
+      <Cites ids={ids} />
+    </p>
   );
 }
 
@@ -29,33 +44,34 @@ export default function Problem() {
           <Beat visual={<WaterVisual />}>
             <p className="text-lead">
               {waterBefore}
-              <Counter value={3} />
+              <Counter value={17} />
               {waterAfter}
-              <Cite id={beatWater.cite} />
+              <Cites ids={beatWater.cite} />
             </p>
+            <Note text={beatWater.note} ids={beatWater.noteCite} />
           </Beat>
 
           <Beat visual={<EnergyBars />}>
             <p className="text-lead">
               {beatEnergy.text}
-              <Cite id={beatEnergy.cite} />
+              <Cites ids={beatEnergy.cite} />
             </p>
           </Beat>
 
           <Beat visual={<RecyclingVisual />}>
             <p className="text-lead">
               {beatRecycling.text}
-              <Cite id={beatRecycling.cite} />
+              <Cites ids={beatRecycling.cite} />
             </p>
+            <Note text={beatRecycling.note} ids={beatRecycling.noteCite} />
           </Beat>
 
           <Beat visual={<OceanRing />}>
             <p className="text-lead">
               {beatOceans.text}
-              {beatOceans.cite.map((id) => (
-                <Cite key={id} id={id} />
-              ))}
+              <Cites ids={beatOceans.cite} />
             </p>
+            <Note text={beatOceans.note} ids={beatOceans.noteCite} />
           </Beat>
         </div>
       </div>

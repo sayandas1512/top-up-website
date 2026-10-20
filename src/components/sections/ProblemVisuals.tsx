@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
 import { DROP_PATH } from "@/components/ui/Drop";
 import { BOTTLE, sinePath } from "@/components/ui/paths";
+import Cite from "@/components/ui/Cite";
 import { copy } from "@/content/copy";
 
 // Every visual's default markup is its final state. GSAP sets the starting state and plays once
@@ -20,7 +21,7 @@ function DropShape({ className, ...rest }: { className?: string } & React.SVGPro
 }
 
 
-/** Beat 1: one drop pours into a bottle, two more drops appear beside it. */
+/** Beat 1: one drop pours into a bottle (1 litre), then 16 more appear beside it: about 17 litres in all. */
 export function WaterVisual() {
   const root = useRef<SVGSVGElement>(null);
 
@@ -45,7 +46,7 @@ export function WaterVisual() {
             { keyframes: { rotation: [0, -5, 4, -2, 0] }, svgOrigin: "65 125", duration: 0.7, ease: "sine.inOut" },
             0.55,
           )
-          .fromTo(extras, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, stagger: 0.18, ease: "back.out(2)" }, 1.0);
+          .fromTo(extras, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, stagger: 0.06, ease: "back.out(2)" }, 1.0);
       });
       return () => mm.revert();
     },
@@ -81,25 +82,24 @@ export function WaterVisual() {
           </g>
         </g>
       </g>
-      <g transform="translate(118 20)">
-        <g data-extra style={{ transformBox: "fill-box", transformOrigin: "center" }}>
-          <g transform="scale(0.34)">
-            <DropShape />
+      {/* The other 16 litres: a 4 by 4 block of drops. */}
+      {Array.from({ length: 16 }, (_, i) => (
+        <g key={i} transform={`translate(${112 + (i % 4) * 21} ${14 + Math.floor(i / 4) * 27})`}>
+          <g data-extra style={{ transformBox: "fill-box", transformOrigin: "center" }}>
+            <g transform="scale(0.17)">
+              <DropShape />
+            </g>
           </g>
         </g>
-      </g>
-      <g transform="translate(152 60)">
-        <g data-extra style={{ transformBox: "fill-box", transformOrigin: "center" }}>
-          <g transform="scale(0.34)">
-            <DropShape />
-          </g>
-        </g>
-      </g>
+      ))}
     </svg>
   );
 }
 
-/** Beat 2: bottled vs treated tap, drawn to scale from the sourced range. */
+/**
+ * Beat 2: bottled water in India (7.08 MJ per litre, Tandon et al. 2014), the US range (5.6 to 10.2 MJ, Gleick & Cooley
+ * 2009) and a tap marker. All bars share one scale, with 10.2 MJ as the full width.
+ */
 export function EnergyBars() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -110,9 +110,9 @@ export function EnergyBars() {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         gsap.fromTo(
-          el.querySelector("[data-bottled]"),
+          el.querySelectorAll("[data-grow]"),
           { scaleX: 0 },
-          { scaleX: 1, duration: 1.2, ease: "power2.out", scrollTrigger: { trigger: el, start: ENTER, once: true } },
+          { scaleX: 1, duration: 1.2, ease: "power2.out", stagger: 0.25, scrollTrigger: { trigger: el, start: ENTER, once: true } },
         );
       });
       return () => mm.revert();
@@ -120,24 +120,39 @@ export function EnergyBars() {
     { scope: root },
   );
 
-  // 5.6 and 10.2 MJ per litre, as fractions of the 10.2 maximum.
-  const solid = (5.6 / 10.2) * 100;
+  const MAX = 10.2;
+  const india = (7.08 / MAX) * 100;
+  const usFrom = (5.6 / MAX) * 100;
 
   return (
     <div ref={root} className="w-full max-w-md">
-      <p className="text-[0.95em] font-semibold">{copy.energy.bottledLabel}</p>
+      <p className="text-[0.95em] font-semibold">
+        {copy.energy.indiaLabel}
+        <Cite id="tandon-india-2014" />
+      </p>
       <div className="mt-2 h-8 w-full">
-        <div data-bottled className="flex h-full origin-left will-change-transform">
-          <div className="h-full rounded-l bg-drop" style={{ width: `${solid}%` }} />
-          {/* The lighter section is the rest of the sourced range, up to 10.2. */}
-          <div className="h-full rounded-r bg-drop/45" style={{ width: `${100 - solid}%` }} />
+        <div data-grow className="h-full origin-left rounded bg-drop will-change-transform" style={{ width: `${india}%` }} />
+      </div>
+
+      <p className="mt-5 text-[0.95em] font-semibold">
+        {copy.energy.usLabel}
+        <Cite id="gleick-cooley-energy" />
+      </p>
+      <div className="mt-2 h-8 w-full">
+        {/* The US range as a lighter band from 5.6 to 10.2. */}
+        <div data-grow className="h-full origin-left will-change-transform" style={{ marginLeft: `${usFrom}%`, width: `${100 - usFrom}%` }}>
+          <div className="h-full rounded bg-drop/45" />
         </div>
       </div>
+
       <p className="mt-5 text-[0.95em] font-semibold">{copy.energy.tapLabel}</p>
       <div className="mt-2 h-8 w-full">
         <div className="h-full w-1 rounded bg-navy" />
       </div>
-      <p className="mt-4 font-semibold">{copy.energy.ratio}</p>
+      <p className="mt-4 font-semibold">
+        {copy.energy.ratio}
+        <Cite id="gleick-cooley-energy" />
+      </p>
       <p className="mt-1 text-[0.9em] opacity-80">{copy.energy.note}</p>
     </div>
   );

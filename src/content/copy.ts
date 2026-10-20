@@ -11,35 +11,43 @@ export const copy = {
   },
   problem: {
     heading: "The bottle is the expensive part.",
+    // India-first. Each stat has a source id; `note` carries the wider or older context, also cited.
     beats: [
       {
         id: "water",
-        text: "It takes about 3 litres of water to make 1 litre of bottled water.",
-        cite: "pacinst-water-use" as SourceId
+        text: "In one study of eight Indian bottling plants, it took about 17 litres of water to make 1 litre of bottled water. That counts the bottle, the carton and the energy.",
+        cite: ["tandon-india-2014"] as SourceId[],
+        note: "Plant operations alone use far less: about 1.4 litres per litre in a 2024 industry study of North American bottling plants, which looks only at the plants' own work.",
+        noteCite: ["ibwa-antea-2024"] as SourceId[]
       },
       {
         id: "energy",
         text: "Bottled water takes far more energy than treated tap water, once you count making the bottle, filling it and moving it.",
-        cite: "gleick-cooley-energy" as SourceId
+        cite: ["tandon-india-2014", "gleick-cooley-energy"] as SourceId[]
       },
       {
         id: "recycling",
         text: "India already recycles most of its PET bottles. But making and moving a bottle costs water and energy first. The best bottle is the one you never need.",
-        cite: "ncl-pace-pet" as SourceId
+        cite: ["ncl-pace-pet"] as SourceId[],
+        note: "Industry reports put the rate at about 92% in 2024-25. Treat exact figures with care: a 2024 report from the Centre for Science and Environment found some plastic waste processors issuing fraudulent recycling certificates.",
+        noteCite: ["petplanet-2025", "cse-epr-2024"] as SourceId[]
       },
       {
         id: "oceans",
-        text: "Plastic makes up most of the debris found in the world's oceans. The \"garbage patches\" are mostly tiny plastic fragments, which is why they are so hard to clean up.",
-        cite: ["si-marine-debris", "noaa-garbage-patch"] as SourceId[]
+        text: "On India's beaches, tourism and recreation are the main sources of litter. Plastic was 43% of beach litter in 2024, down from 67% in 2018. A survey of coastal mangroves in Goa found plastic was 66% of human-made litter.",
+        cite: ["pib-beach-litter-2025"] as SourceId[],
+        note: "Worldwide, plastic is at least 85% of marine litter. The \"garbage patches\" are mostly tiny plastic fragments, which is why they are so hard to clean up.",
+        noteCite: ["unep-marine-litter-2021", "si-marine-debris", "noaa-garbage-patch"] as SourceId[]
       }
     ]
   },
-  // Labels for the energy bars. Figures come from gleick-cooley-energy; no tap value is stated beyond the source.
+  // Labels for the energy bars. India figure: tandon-india-2014. US range and ratio: gleick-cooley-energy.
   energy: {
-    bottledLabel: "Bottled water: 5.6 to 10.2 megajoules (MJ) per litre",
+    indiaLabel: "Bottled water in India: about 7.1 megajoules (MJ) per litre",
+    usLabel: "US analysis: 5.6 to 10.2 MJ per litre",
     tapLabel: "Treated tap water: a tiny fraction of that",
-    ratio: "Bottled water takes up to about 2,000 times more energy.",
-    note: "US analysis. Bars are drawn to scale. The tap bar would be thinner than a pixel, so it is shown as a marker."
+    ratio: "In the US analysis, bottled water took up to about 2,000 times more energy than tap water.",
+    note: "We found no Indian figure for tap water, so the tap comparison is the US one. Bars are drawn to scale. The tap bar would be thinner than a pixel, so it is shown as a marker."
   },
   hierarchy: {
     steps: ["Rethink", "Reduce", "Reuse", "Recycle"],

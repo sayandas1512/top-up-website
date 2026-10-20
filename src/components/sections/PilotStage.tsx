@@ -137,23 +137,25 @@ export default function PilotStage() {
 
       {/* The refill bottle by the counter, and the two pilot prices */}
       <figure className="m-0">
-        <div data-jug className="mx-auto w-full max-w-[220px]">
-          <svg viewBox="0 0 120 190" className="h-auto w-full" role="img" aria-label={copy.pilot.refillCaption}>
-            <defs>
-              <clipPath id="jug-clip">
-                <path d={JUG} />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#jug-clip)">
-              <rect x="0" y="62" width="120" height="110" fill="var(--drop)" />
-            </g>
-            <path d={JUG} fill="none" stroke="var(--navy)" strokeWidth="3.5" strokeLinejoin="round" />
-            <path d="M38 6h44" stroke="var(--navy)" strokeWidth="5" strokeLinecap="round" />
-            {/* The counter */}
-            <rect x="0" y="170" width="120" height="14" rx="3" fill="var(--navy)" />
-          </svg>
+        <div data-jug>
+          <div className="mx-auto w-full max-w-[200px] md:max-w-[220px]">
+            <svg viewBox="0 0 120 190" className="h-auto w-full" role="img" aria-label={copy.pilot.refillCaption}>
+              <defs>
+                <clipPath id="jug-clip">
+                  <path d={JUG} />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#jug-clip)">
+                <rect x="0" y="62" width="120" height="110" fill="var(--drop)" />
+              </g>
+              <path d={JUG} fill="none" stroke="var(--navy)" strokeWidth="3.5" strokeLinejoin="round" />
+              <path d="M38 6h44" stroke="var(--navy)" strokeWidth="5" strokeLinecap="round" />
+              {/* The counter */}
+              <rect x="0" y="170" width="120" height="14" rx="3" fill="var(--navy)" />
+            </svg>
+          </div>
+          <figcaption className="mt-3 text-center text-[0.95em]">{copy.pilot.refillCaption}</figcaption>
         </div>
-        <figcaption className="mt-3 text-center text-[0.95em]">{copy.pilot.refillCaption}</figcaption>
 
         <ul className="mt-6 grid gap-3">
           {copy.pilot.prices.map((p) => (

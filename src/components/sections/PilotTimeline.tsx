@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap } from "@/components/motion/registerGsap";
 import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
+import Cite from "@/components/ui/Cite";
 import { copy } from "@/content/copy";
 
 /** Season 1, After one year, Season 2. A line draws as you scroll; each step fades up once. Final state is the default markup. */
@@ -54,7 +55,11 @@ export default function PilotTimeline() {
             {i + 1}
           </span>
           <h3 className="font-display text-h3 font-bold">{t.when}</h3>
-          <p className="mt-1">{t.text}</p>
+          <p className="mt-1">
+            {t.text}
+            {/* Step 1 repeats the 20-litre pilot detail. */}
+            {i === 0 ? <Cite id={copy.pilot.cite} /> : null}
+          </p>
         </li>
       ))}
     </ol>

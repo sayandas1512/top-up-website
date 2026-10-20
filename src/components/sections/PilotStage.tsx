@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap } from "@/components/motion/registerGsap";
 import { useGsapWhenIdle } from "@/components/motion/useGsapWhenIdle";
+import Cite from "@/components/ui/Cite";
 import { BOTTLE, sinePath } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
 
@@ -126,6 +127,8 @@ export default function PilotStage() {
           <span aria-hidden="true" data-stage-label className="font-semibold">
             {copy.pilot.beforeLabel}
           </span>
+          {/* The label text is rewritten by GSAP, so the citation sits beside it, not inside it. */}
+          <Cite id={copy.pilot.cite} />
         </div>
         {/* Screen readers get both states at once, not the changing number. */}
         <p className="sr-only">
@@ -185,13 +188,19 @@ export default function PilotStage() {
               <rect x="0" y="152" width="120" height="14" rx="3" fill="var(--navy)" />
             </svg>
           </div>
-          <figcaption className="mt-3 text-center text-[0.95em]">{copy.pilot.refillCaption}</figcaption>
+          <figcaption className="mt-3 text-center text-[0.95em]">
+            {copy.pilot.refillCaption}
+            <Cite id={copy.pilot.cite} />
+          </figcaption>
         </div>
 
         <ul className="mt-6 grid gap-3">
           {copy.pilot.prices.map((p) => (
             <li key={p.when} data-price className="rounded-2xl border-2 border-navy px-5 py-3">
-              <p className="text-[0.9em] font-semibold">{p.when}</p>
+              <p className="text-[0.9em] font-semibold">
+                {p.when}
+                <Cite id={copy.pilot.cite} />
+              </p>
               <p className="font-display text-h3 font-bold leading-tight">{p.price}</p>
             </li>
           ))}

@@ -2,6 +2,30 @@
 
 Gaps, unsourced claims, asset requests and client decisions. Add to this file instead of inventing data.
 
+## Launch checklist
+
+**Blocks launch (needs a decision or an input from you or the client)**
+1. **A real `FORM_ENDPOINT`.** Empty on Vercel (Preview and Production), so every form shows an error until it is set. Details under "Phase 4 notes".
+2. **The domain.** None is bought or attached. Set `NEXT_PUBLIC_SITE_URL` once chosen. Decide whether the `vercel.app` production address may be indexed in the meantime (see "Phase 5 notes").
+3. **Client sign-off on wording I wrote** (page title, Open Graph subtitle, bottle copy, footer contact line, the "It's cheaper" card), and on the two pilot prices (Rs.10, Rs.5). Also their decision on the optional India-specific sources (draft PR #7).
+4. **The vector logo.** The drop, favicon, Apple icon and social image are recreations of a placeholder.
+5. **A public contact route.** There is no email or phone, so the footer points to the form. Fine for launch if the client is happy with that.
+6. **Privacy and analytics.** The footer states only what forms do. Decide where details are stored and for how long, whether a fuller privacy note is needed, and whether to switch on Web Analytics.
+7. **Real-device checks I could not do:** frame rate and feel of the pinned hero and pilot on a mid-range phone, the map's two-finger gestures on touch, and a pass with a real screen reader (VoiceOver and TalkBack). Everything automated passes (see "Phase 6 results").
+8. **Publishing:** nothing is merged yet and production still shows the Phase 0 starter. Decide the merge order, and whether to enable branch protection.
+
+**Can wait (nice to have or later phases)**
+- Shack-owner consent (the shack is unnamed, so launch is fine without it), real centre list, photos, bottle spec and price (copy says "announced at launch").
+- Descriptions for steps 2 and 3 of "How it works".
+- Hindi and Konkani, a stronger spam defence, a paid or self-hosted map tile provider.
+
+## Phase 6 results
+- **Performance (mobile, Lighthouse), Phase 5 branch vs now, run side by side:** simulated Performance 76 to 87 became **94 to 97**, simulated TBT 470 to 520 ms became **30 to 40 ms**; with real throttling (slow 4G, 4x CPU) Performance 73 to 74 became **89 to 94**, TBT 1.2 to 1.3 s became **0.27 to 0.42 s**. CLS 0 to 0.002. Real-throttled LCP is 0.8 to 1.0 s. **Simulated LCP is 2.4 to 3.1 s and noisy**: the browser's own timing shows the text painting almost immediately, so this is Lighthouse's CPU model of the hydration work, but it means the 2.5 s LCP budget is only reliably met under real throttling.
+- **What fixed it:** one ScrollTrigger refresh instead of several; one tween for the 75 pilot bottles; forms and zod loaded only when needed; below-the-fold animations set up when the browser is idle (one short task per section) instead of all in one long task during hydration. The cost was GSAP's own style reads, repeated for about 100 animated elements.
+- **Accessibility:** axe-core reports 0 violations in four states (desktop, mobile, reduced motion, forms open with errors); Lighthouse 100. The colour pairings axe could not resolve were calculated by hand: all pass (lowest is 4.08:1 for large Hierarchy text, which needs 3:1). Keyboard walk-through: every control reachable once and in order, with a visible focus indicator; screen-reader tree checked for the counters.
+- **Fixed in this phase:** hero CTAs could be focused while invisible (focusing one now jumps to the end of the pinned scroll); no skip link (added); header logo name did not match its text; lazy-loaded forms and the map were skipped by keyboard users (they now mount after load, and the map placeholder is a focusable control); the map stole focus once loaded (now only if it still has it); pilot figures lacked their own citations (added).
+- **Frame rate:** headless Chrome caps at 30 fps, so true fps could not be measured. Main-thread use while scrolling under CPU throttling was 38 to 46% on desktop (4x) and 51 to 68% on a phone-sized screen (4x), mostly paint in software-rendered Chrome. This is directional only.
+
 ## Needed from the client
 | Item | Why it matters | Status |
 |---|---|---|
@@ -48,12 +72,10 @@ Gaps, unsourced claims, asset requests and client decisions. Add to this file in
 - **MapLibre worker workaround.** MapLibre's web worker fails to load under the Next bundler, so `scripts/copy-maplibre-worker.mjs` copies it into `public/` before dev and build, and `MapView` points at it. The copy is git-ignored. Revisit on a MapLibre or Next upgrade.
 
 ## Technical notes
-- **Total blocking time is the main performance problem.** With real throttling (slow 4G, 4x CPU) TBT is about 1.1 to 1.3 s and Performance about 73 to 76, with LCP about 0.9 s. It is the same on the Phase 3 branch and with the bottle-motion branch, so it came from the hero and pilot work (GSAP and ScrollTrigger setup, 75 pilot tweens, hydration), not from the ambient CSS loops. Phase 6 should look at lazy-initialising below-the-fold ScrollTriggers, a single stagger tween for the pilot bottles instead of 75, and code-splitting.
 - **Hero first paint.** The default markup is the final state (water full, screen blue) so the page reads without JS and under reduced motion. `CLAUDE.md` says hidden start states come from GSAP, not CSS, so on a slow phone a visitor may briefly see the blue state before JS hydrates and resets it to the empty drop. If that flash is unacceptable, the fix is a small CSS start state gated on a `js` class set by an inline script. That bends the "GSAP not CSS" rule, so it needs a decision.
-- **Frame rate on a real phone is unverified.** Headless Chrome caps at 30 fps, so scrubbing smoothness (pinned hero, 60 fps target) still needs a check on a real mid-range phone.
 - The header's secondary link ("Find a refill point") is hidden below 640px so the primary button fits on a 360px phone. It stays in the hero and footer. Confirm this is acceptable.
 - `experimental.inlineCss` is on in `next.config.ts`. It inlines the roughly 6 KB stylesheet to remove a render-blocking request. Experimental flag; revisit if it causes trouble on a Next upgrade.
-- Vercel's default deployment protection is on for this project, so preview URLs require a Vercel login. Decide whether previews should be public for client review.
+- Vercel deployment protection was switched off at the client-facing request, so every `*.vercel.app` URL for this project, including production, is public. Re-enable it (or password-protect) if the site should stay private until launch.
 - `npm audit` reports a high-severity advisory in `braces` (via ESLint tooling). It is dev-only, not shipped, and has no non-breaking fix yet. Revisit when `eslint-config-next` updates.
 - `AGENTS.md` was generated by create-next-app and is kept as is.
 

@@ -112,6 +112,14 @@ export default function Hero() {
             },
           });
 
+          // A keyboard user can Tab to the CTAs while they are still faded out. Focusing one jumps to the end of the
+          // pinned scroll, so what they focus is always visible.
+          const onFocusIn = (e: FocusEvent) => {
+            const st = tl.scrollTrigger;
+            if (st && st.progress < 0.99 && (e.target as Element).closest("[data-reveal]")) window.scrollTo(0, st.end);
+          };
+          section.addEventListener("focusin", onFocusIn);
+
           tl.fromTo(water, { yPercent: 110 }, { yPercent: 0, duration: 0.55 }, 0)
             .fromTo(words, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.12, stagger: 0.045 }, 0.1)
             // The bottles that "never exist": each fades and shrinks away as the water rises.
@@ -125,6 +133,8 @@ export default function Hero() {
             )
             .fromTo(fill, { scale: startScale, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35 }, 0.5)
             .fromTo(reveal, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.15 }, 0.85);
+
+          return () => section.removeEventListener("focusin", onFocusIn);
         },
       );
 

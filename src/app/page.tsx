@@ -11,7 +11,7 @@ import Sources from "@/components/sections/Sources";
 
 export default function Home() {
   return (
-    <main>
+    <main id="main">
       <Hero />
       <Problem />
       <Hierarchy />

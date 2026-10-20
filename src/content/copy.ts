@@ -164,6 +164,9 @@ export const copy = {
     heading: "Become a Top Up Centre.",
     body: "Individuals and businesses make the difference when they feel inspired, encouraged and supported. We'll help you set up a visible refill point and spread the word."
   },
+  a11y: {
+    skip: "Skip to main content"
+  },
   footer: {
     navLabel: "Footer",
     links: [

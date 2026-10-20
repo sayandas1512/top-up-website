@@ -7,13 +7,15 @@ type Props = {
   /** Decorative drops are hidden from assistive tech. Give the logo a title instead. */
   title?: string;
   className?: string;
+  /** Draw "top up" inside the drop. Turn off where the drop sits next to a "Top Up" wordmark. */
+  showText?: boolean;
 };
 
 /**
  * Top Up mark, recreated as inline SVG. PLACEHOLDER until the client supplies the vector logo
  * (see docs/open-questions.md). Swap the paths here and every use updates.
  */
-export default function Drop({ size = 48, title, className }: Props) {
+export default function Drop({ size = 48, title, className, showText = true }: Props) {
   const decorative = !title;
   return (
     <svg
@@ -27,17 +29,19 @@ export default function Drop({ size = 48, title, className }: Props) {
       focusable="false"
     >
       <path d={DROP_PATH} fill="var(--drop)" />
-      <text
-        x="50"
-        y="88"
-        textAnchor="middle"
-        fontSize="19"
-        fontWeight="700"
-        fill="var(--navy)"
-        style={{ fontFamily: "var(--ff-display)" }}
-      >
-        top up
-      </text>
+      {showText ? (
+        <text
+          x="50"
+          y="88"
+          textAnchor="middle"
+          fontSize="19"
+          fontWeight="700"
+          fill="var(--navy)"
+          style={{ fontFamily: "var(--ff-display)" }}
+        >
+          top up
+        </text>
+      ) : null}
     </svg>
   );
 }

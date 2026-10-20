@@ -35,7 +35,7 @@ export default function Header() {
         />
         <div className="container-page relative flex h-full items-center justify-between gap-3">
           <a href="#top" aria-label="Top Up, back to top" className="flex items-center origin-left transition-transform duration-200 group-data-[compact=true]:scale-90">
-            <Drop size={36} />
+            <Drop size={36} showText={false} />
             <span className="ml-2 hidden whitespace-nowrap font-display text-xl font-bold sm:inline">Top Up</span>
           </a>
           <nav aria-label="Main" className="flex items-center gap-2 sm:gap-4">

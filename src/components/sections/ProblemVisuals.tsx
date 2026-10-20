@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
 import { DROP_PATH } from "@/components/ui/Drop";
-import { BOTTLE } from "@/components/ui/paths";
+import { BOTTLE, sinePath } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
 
 // Every visual's default markup is its final state. GSAP sets the starting state and plays once
@@ -32,11 +32,19 @@ export function WaterVisual() {
       mm.add(MOTION_OK, () => {
         const pour = el.querySelector("[data-pour]");
         const level = el.querySelector("[data-level]");
+        const bottle = el.querySelector("[data-bottle-body]");
         const extras = el.querySelectorAll("[data-extra]");
         gsap
           .timeline({ scrollTrigger: { trigger: el, start: ENTER, once: true } })
           .fromTo(pour, { y: -34, opacity: 1 }, { y: 30, opacity: 0, duration: 0.7, ease: "power1.in" })
-          .fromTo(level, { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "power1.out" }, 0.45)
+          .fromTo(level, { y: 70 }, { y: 0, duration: 0.5, ease: "power1.out" }, 0.45)
+          // The bottle gives a small wobble when the drop lands in it.
+          .fromTo(
+            bottle,
+            { rotation: 0 },
+            { keyframes: { rotation: [0, -5, 4, -2, 0] }, svgOrigin: "65 125", duration: 0.7, ease: "sine.inOut" },
+            0.55,
+          )
           .fromTo(extras, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, stagger: 0.18, ease: "back.out(2)" }, 1.0);
       });
       return () => mm.revert();
@@ -52,10 +60,20 @@ export function WaterVisual() {
         </clipPath>
       </defs>
       <g transform="translate(10 0)">
+        <g data-bottle-body>
         <g clipPath="url(#bottle-clip)">
-          <rect data-level x="20" y="64" width="70" height="70" fill="var(--drop)" style={{ transformBox: "fill-box", transformOrigin: "bottom" }} />
+          <g data-level>
+            <rect x="20" y="64" width="70" height="70" fill="var(--drop)" />
+            {/* Surface: one wave period is 35 units, so sliding it by 35 loops seamlessly. */}
+            <path
+              d={sinePath(5, 35, 4, 2.5, 64, 68)}
+              fill="var(--drop)"
+              className="motion-safe:animate-[wave-drift_2.2s_linear_infinite]"
+            />
+          </g>
         </g>
         <path d={BOTTLE} fill="none" stroke="var(--navy)" strokeWidth="3" strokeLinejoin="round" />
+        </g>
         {/* The drop that pours in. It ends faded out, inside the bottle. */}
         <g data-pour opacity="0" transform="translate(55 -2)">
           <g transform="scale(0.14) translate(-50 0)">
@@ -133,7 +151,10 @@ export function RecyclingVisual() {
         <path d={BOTTLE} fill="var(--drop)" fillOpacity="0.45" stroke="var(--navy)" strokeWidth="3" strokeLinejoin="round" />
       </g>
       <g transform="translate(104 0)">
-        <path d={BOTTLE} fill="none" stroke="var(--navy)" strokeWidth="3" strokeDasharray="6 7" strokeLinejoin="round" />
+        {/* The bottle you never need: it floats, never quite arriving. */}
+        <g className="origin-bottom [transform-box:fill-box] motion-safe:animate-[bob_3.6s_ease-in-out_infinite]">
+          <path d={BOTTLE} fill="none" stroke="var(--navy)" strokeWidth="3" strokeDasharray="6 7" strokeLinejoin="round" />
+        </g>
       </g>
     </svg>
   );
@@ -155,6 +176,13 @@ const SCATTER = Array.from({ length: 18 }, (_, i) => {
 export function OceanRing() {
   return (
     <svg viewBox="0 0 180 180" className="h-auto w-full max-w-[200px]" aria-hidden="true" focusable="false">
+      {/* A rolling water line under the ring; the svg edge crops it. */}
+      <path
+        d={sinePath(-40, 40, 8, 4, 168, 180)}
+        fill="var(--drop)"
+        fillOpacity="0.35"
+        className="motion-safe:animate-[wave-drift_5s_linear_infinite] [--wave-shift:-40px]"
+      />
       <g className="origin-center [transform-box:fill-box] motion-safe:animate-[spin_90s_linear_infinite]">
         {RING.map((d, i) => (
           <circle key={`r${i}`} cx={d.x} cy={d.y} r={d.s} fill="var(--navy)" />

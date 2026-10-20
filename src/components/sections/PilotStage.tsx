@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
-import { BOTTLE } from "@/components/ui/paths";
+import { BOTTLE, sinePath } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
 
 const TOTAL = 75; // "about 75 empty bottles daily" (pilot observation)
@@ -82,7 +82,14 @@ export default function PilotStage() {
           });
 
           bottles.forEach((b, i) => {
-            tl.fromTo(b, { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.3, duration: STEP * 3 }, START + RANK_OF[i] * STEP);
+            // Each bottle tumbles and lifts as it goes, so clearing reads as "lifted away", not just "deleted".
+            const turn = (i % 2 ? 1 : -1) * (14 + ((i * 7) % 18));
+            tl.fromTo(
+              b,
+              { opacity: 1, scale: 1, rotation: 0, y: 0 },
+              { opacity: 0, scale: 0.3, rotation: turn, y: -16, duration: STEP * 3 },
+              START + RANK_OF[i] * STEP,
+            );
           });
           tl.fromTo(jug, { x: 36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.15 }, 0)
             .fromTo(prices[0], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.12 }, 0.15)
@@ -127,7 +134,13 @@ export default function PilotStage() {
         >
           {Array.from({ length: TOTAL }, (_, i) => (
             <span key={i} data-bottle className="block aspect-[58/122] w-full">
-              <svg viewBox="26 4 58 122" className="h-full w-full" focusable="false">
+              {/* Faint sway that ripples across the columns. Desktop only, and off under reduced motion. */}
+              <svg
+                viewBox="26 4 58 122"
+                className="h-full w-full origin-bottom md:motion-safe:animate-[bob_3.4s_ease-in-out_infinite]"
+                style={{ animationDelay: `${(i % 15) * 0.14}s` }}
+                focusable="false"
+              >
                 <use href="#pilot-bottle" />
               </svg>
             </span>
@@ -139,19 +152,33 @@ export default function PilotStage() {
       <figure className="m-0">
         <div data-jug>
           <div className="mx-auto w-full max-w-[200px] md:max-w-[220px]">
-            <svg viewBox="0 0 120 190" className="h-auto w-full" role="img" aria-label={copy.pilot.refillCaption}>
+            <svg
+              viewBox="0 0 120 168"
+              className="h-auto w-full"
+              role="img"
+              aria-label={copy.pilot.refillCaption}
+            >
               <defs>
                 <clipPath id="jug-clip">
                   <path d={JUG} />
                 </clipPath>
               </defs>
+              {/* Only the bottle bobs; the counter stays put. */}
+              <g className="origin-bottom [transform-box:fill-box] motion-safe:animate-[bob_5s_ease-in-out_infinite]">
               <g clipPath="url(#jug-clip)">
-                <rect x="0" y="62" width="120" height="110" fill="var(--drop)" />
+                <rect x="0" y="64" width="120" height="110" fill="var(--drop)" />
+                {/* Surface slosh: period 40, so sliding by 40 loops seamlessly. */}
+                <path
+                  d={sinePath(-40, 40, 6, 3, 64, 68)}
+                  fill="var(--drop)"
+                  className="motion-safe:animate-[wave-drift_2.6s_linear_infinite] [--wave-shift:-40px]"
+                />
               </g>
               <path d={JUG} fill="none" stroke="var(--navy)" strokeWidth="3.5" strokeLinejoin="round" />
               <path d="M38 6h44" stroke="var(--navy)" strokeWidth="5" strokeLinecap="round" />
+              </g>
               {/* The counter */}
-              <rect x="0" y="170" width="120" height="14" rx="3" fill="var(--navy)" />
+              <rect x="0" y="152" width="120" height="14" rx="3" fill="var(--navy)" />
             </svg>
           </div>
           <figcaption className="mt-3 text-center text-[0.95em]">{copy.pilot.refillCaption}</figcaption>

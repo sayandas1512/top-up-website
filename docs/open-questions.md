@@ -24,6 +24,11 @@ Gaps, unsourced claims, asset requests and client decisions. Add to this file in
 - **Recycling figure.** The 90% figure is industry-backed (2017) and a 2025 industry review reports about 92%. Copy says "most", not a number.
 - **Hindi and Konkani.** `copy.ts` is structured for translation. Translations and who reviews them are undecided.
 
+## Phase 3 notes
+- **"Bring your bottle" and "Top up and go" have no description.** Part C gives text only for step 1. Steps 2 and 3 show their title only. Want a one-line description for each?
+- **Pilot timeline wording** is built only from the pilot paragraph (refill bottle placed; price lowered; one-litre bottles dropped and guests bring their own). The "It's cheaper" insight card is the client's pilot insight, shown inside the pilot label. Confirm they are happy with "cheaper" with no figure beside it.
+- **Phase 6 audit:** the word "costs" appears once in the recycling beat ("costs water and energy"). That is resource use, not money, so it should stay, but the grep will flag it.
+
 ## Technical notes
 - **Hero first paint.** The default markup is the final state (water full, screen blue) so the page reads without JS and under reduced motion. `CLAUDE.md` says hidden start states come from GSAP, not CSS, so on a slow phone a visitor may briefly see the blue state before JS hydrates and resets it to the empty drop. If that flash is unacceptable, the fix is a small CSS start state gated on a `js` class set by an inline script. That bends the "GSAP not CSS" rule, so it needs a decision.
 - **Frame rate on a real phone is unverified.** Headless Chrome caps at 30 fps, so scrubbing smoothness (pinned hero, 60 fps target) still needs a check on a real mid-range phone.

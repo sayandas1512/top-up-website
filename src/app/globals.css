@@ -82,3 +82,9 @@ h3 {
     transform: translateY(-4px) rotate(2deg);
   }
 }
+
+/* MapLibre controls: keep the zoom buttons at the 44px touch-target minimum. */
+.maplibregl-ctrl.maplibregl-ctrl-group button {
+  width: var(--tap-min);
+  height: var(--tap-min);
+}

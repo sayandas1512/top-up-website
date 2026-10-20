@@ -17,7 +17,8 @@ function markerElement(label: string): HTMLButtonElement {
   const el = document.createElement("button");
   el.type = "button";
   el.setAttribute("aria-label", label);
-  el.style.cssText = "width:34px;height:42px;padding:0;border:0;background:none;cursor:pointer";
+  // 44px wide and tall so the marker is an easy touch target; the drop is centred inside it.
+  el.style.cssText = "width:44px;height:48px;padding:0;border:0;background:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center";
   el.innerHTML = `<svg viewBox="0 0 100 124" width="34" height="42" aria-hidden="true" focusable="false"><path d="${DROP_PATH}" fill="#3FBFEF" stroke="#0B2545" stroke-width="5" stroke-linejoin="round"/></svg>`;
   return el;
 }

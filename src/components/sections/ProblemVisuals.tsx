@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/components/motion/registerGsap";
 import { DROP_PATH } from "@/components/ui/Drop";
+import { BOTTLE } from "@/components/ui/paths";
 import { copy } from "@/content/copy";
 
 // Every visual's default markup is its final state. GSAP sets the starting state and plays once
@@ -18,7 +19,6 @@ function DropShape({ className, ...rest }: { className?: string } & React.SVGPro
   );
 }
 
-const BOTTLE = "M44 8h22v14c0 6 14 12 14 28v62a10 10 0 0 1-10 10H40a10 10 0 0 1-10-10V50c0-16 14-22 14-28Z";
 
 /** Beat 1: one drop pours into a bottle, two more drops appear beside it. */
 export function WaterVisual() {

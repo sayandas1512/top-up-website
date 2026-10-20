@@ -57,6 +57,20 @@ export const copy = {
     ],
     insights: "Aware tourists switch because it is better for the environment, and because it is cheaper.",
     label: "Pilot observation, one beach shack in Arambol, Goa.",
+    // Everything below is taken from the pilot body text above; nothing new is claimed.
+    beforeLabel: "Empty bottles per day, before",
+    afterLabel: "Empty bottles per day, after",
+    refillCaption: "A 20-litre refill bottle by the counter",
+    prices: [
+      { when: "First season", price: "Rs.10 per litre" },
+      { when: "After one year", price: "Rs.5 per litre" }
+    ],
+    timeline: [
+      { when: "Season 1", text: "A 20-litre refill bottle is placed by the counter." },
+      { when: "After one year", text: "The refill price is lowered." },
+      { when: "Season 2", text: "One-litre bottles are no longer stocked. Guests bring their own." }
+    ],
+    insightCards: ["It's better for the environment", "It's cheaper"],
     cite: "topup-pilot" as SourceId
   },
   howItWorks: {

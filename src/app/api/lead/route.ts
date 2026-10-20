@@ -19,6 +19,16 @@ function tooMany(ip: string): boolean {
   return recent.length > MAX_PER_WINDOW;
 }
 
+// Formspree (and similar services) email each submission. A clear subject helps you sort them, and a field named
+// "email" lets you hit Reply. Our "contact" field can be an email or a phone number, so only copy it when it is an email.
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function subjectFor(lead: { type: string; audience?: string; interest?: string }): string {
+  if (lead.type === "join") return `Top Up: new Centre enquiry (${lead.audience === "institution" ? "school, company or institution" : "shack, restaurant or hotel"})`;
+  if (lead.type === "bottle") return `Top Up: bottle ${lead.interest === "bulk" ? "bulk enquiry" : "launch notification"}`;
+  return "Top Up: shack suggestion for the map";
+}
+
 const json = (body: Record<string, unknown>, status: number) => NextResponse.json(body, { status });
 
 export async function POST(req: Request) {
@@ -61,7 +71,13 @@ export async function POST(req: Request) {
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ ...lead, submittedAt: new Date().toISOString(), source: "top-up-website" }),
+      body: JSON.stringify({
+        _subject: subjectFor(lead),
+        ...(EMAIL.test(lead.contact) ? { email: lead.contact } : {}),
+        ...lead,
+        submittedAt: new Date().toISOString(),
+        source: "top-up-website",
+      }),
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return json({ ok: false, error: "We couldn't send that just now. Please try again." }, 502);

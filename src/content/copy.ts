@@ -81,7 +81,58 @@ export const copy = {
       { n: 3, title: "Top up and go", text: "" }
     ]
   },
+  find: {
+    intro: "Look for the hanging cane lamp and the blue drop.",
+    mapLabel: "Map of Top Up refill points",
+    listHeading: "Refill points",
+    pilotPlace: "Arambol, Goa",
+    pilotKind: "Pilot refill point",
+    approxNote: "Shown at village level, not the exact spot.",
+    comingSoon: "More centres coming",
+    comingSoonText: "Refill points will appear here as centres join.",
+    mapError: "The map couldn't load. The list below has the same information.",
+    suggestHeading: "Know a shack that should be on this map?",
+    suggestIntro: "Tell us where it is and we will get in touch.",
+    suggestSubmit: "Send suggestion",
+    suggestDone: "Thank you. We have your suggestion.",
+    fields: {
+      name: "Shack or place name",
+      place: "Where is it?",
+      contact: "Link or contact"
+    }
+  },
   join: {
+    gets: {
+      heading: "What a centre gets",
+      items: [
+        "Lamp and blue-drop signage",
+        "Posters and stickers",
+        "A listing on the map",
+        "Top Up bottles to offer guests"
+      ]
+    },
+    asks: {
+      heading: "What we ask",
+      items: ["Clean filtered water", "A visible refill point", "The sign displayed"]
+    },
+    tabs: {
+      business: "Shack, restaurant or hotel",
+      institution: "School, company or institution"
+    },
+    form: {
+      name: "Your name",
+      venue: "Name of the place",
+      venueType: "Type of place",
+      town: "Town and state",
+      contact: "Phone or email",
+      contactHint: "We will use this to get back to you.",
+      message: "Anything you'd like us to know (optional)",
+      submit: "Send",
+      sending: "Sending...",
+      done: "Thank you. We have your details and will get in touch.",
+      error: "Something went wrong. Please try again.",
+      privacy: "Your details are sent to the Top Up team so we can reply to you."
+    },
     heading: "Become a Top Up Centre.",
     body: "Individuals and businesses make the difference when they feel inspired, encouraged and supported. We'll help you set up a visible refill point and spread the word."
   },

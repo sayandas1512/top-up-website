@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "pilot-arambol",
+    "kind": "pilot",
+    "place": "Arambol, Goa",
+    "lat": 15.6879,
+    "lng": 73.7056,
+    "approximate": true
+  }
+]

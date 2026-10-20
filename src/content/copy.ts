@@ -90,6 +90,7 @@ export const copy = {
     approxNote: "Shown at village level, not the exact spot.",
     comingSoon: "More centres coming",
     comingSoonText: "Refill points will appear here as centres join.",
+    loadMap: "Load the map of refill points",
     mapError: "The map couldn't load. The list below has the same information.",
     suggestHeading: "Know a shack that should be on this map?",
     suggestIntro: "Tell us where it is and we will get in touch.",

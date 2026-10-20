@@ -13,13 +13,10 @@ export default function Footer() {
           </div>
           <p className="mt-4">{copy.closing}</p>
           {/* No public email or phone yet (see docs/open-questions.md), so contact goes through the form. */}
-          <p className="mt-4">
-            {f.contactIntro}{" "}
-            <a href="#join" className="font-semibold underline underline-offset-4">
-              {f.contactLink}
-            </a>
-            .
-          </p>
+          <p className="mt-4">{f.contactIntro}</p>
+          <a href="#join" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+            {f.contactLink}
+          </a>
         </div>
         <nav aria-label={f.navLabel}>
           <ul className="grid gap-1">

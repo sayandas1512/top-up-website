@@ -172,7 +172,7 @@ export const copy = {
       { href: "#bottle", label: "The Top Up bottle" },
       { href: "#sources", label: "Sources" }
     ],
-    contactIntro: "Questions, or want to get involved? Use the form in",
+    contactIntro: "Questions, or want to get involved? Use the form here:",
     contactLink: "Become a Top Up Centre",
     privacy: "Details you send in a form go to the Top Up team so we can reply to you.",
     built: "Built with care in India"
